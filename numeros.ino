@@ -1,7 +1,7 @@
-/* Código para manejar un tetclado de 12 teclas y un display TM1637 (display de 
+/* Código para manejar un teclado de 12 teclas y un display TM1637 (display de 
 4 dígitos compuestos por 7 LEDs cada uno)
 
-El teclado tiene 7 pines que se conectan al arduino del pin
+El teclado tiene 7 pines que se conectan a los pines de entrada del arduino
 Teclado 1 --> Pin 8
 Teclado 2 --> Pin 2
 Teclado 3 --> Pin 3
@@ -12,7 +12,7 @@ Teclado 7 --> Pin 7
 Dependiendo del teclado puede que sea necesario modificar la asiganción de pines
 ya sea en el físico, o en el código. 
 
-El display se conceta:
+El display se conecta:
 GND --> GND
 Vin --> 3.3V
 CLK --> pin12
@@ -55,7 +55,7 @@ Keypad customKeypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
 
 // ====================================================================================
-// CONFIGURACION DEL VISOR ============================================================
+// CONFIGURACION DEL DISPLAY ==========================================================
 
 // Define the connections pins:
 #define CLK 12
@@ -67,7 +67,7 @@ TM1637Display display = TM1637Display(CLK, DIO);
 // Create array that turns all segments on:
 const uint8_t ochos[] = {0xff, 0xff, 0xff, 0xff};
 
-// Create Push
+// push: arreglo de bytes para escribir "Push" usando display.setSegments()
 const uint8_t push[] = {
   SEG_A | SEG_B | SEG_G | SEG_F | SEG_E,           // P
   SEG_C | SEG_D | SEG_E,                           // u
@@ -75,7 +75,7 @@ const uint8_t push[] = {
   SEG_C | SEG_G | SEG_E | SEG_F                    // h
 };
 
-// Create Guiones 
+// guiones: arreglo de bytes para escribir "----" usando display.setSegments()
 const uint8_t guiones[] = {
   SEG_G,           // -
   SEG_G,           // -
@@ -83,7 +83,7 @@ const uint8_t guiones[] = {
   SEG_G            // -
 };
 
-// Create error 
+// error: arreglo de bytes para escribir "Erro" usando display.setSegments()
 const uint8_t error[] = {
   SEG_A | SEG_F | SEG_G | SEG_D | SEG_E,    // E
   SEG_E | SEG_G ,                           // r
@@ -93,7 +93,7 @@ const uint8_t error[] = {
 };
 
 
-// Create seg_gano 
+// seg_gano: arreglo de bytes para escribir "Gano" usando display.setSegments()
 const uint8_t seg_gano[] = {
   SEG_A | SEG_F | SEG_G | SEG_C | SEG_D | SEG_E,    // G
   SEG_A | SEG_B | SEG_C | SEG_G | SEG_E | SEG_F,    // a
@@ -118,6 +118,7 @@ void setup() {
 
 void loop() {
 
+   // Genera el número secreto y asigna "false" a "gano".
    inicio();
 
    // Queda en el siguiente loop hasta que "gano" es true (verdadero).
@@ -126,15 +127,15 @@ void loop() {
      verifica();
    }
 
-   // Hace un gfestejo y finalmente vuelve a colocar "gano" = "false"
+   // Hace un festejo
    festejo();
   
 }
 
 
 void inicio(){
-   // inicia el juego y genera el número aletorio, se guardará en cadena (arreglo de cuatro caracteres) 
-   // como cuatro caracteres que se corresponden con los digitos de izquierda a derecha.
+   // Inicia el juego y genera el número aletorio, se guardará en "cadena" (arreglo de cuatro caracteres). 
+   // El primer caracter de cadena es la cifra más significativa y el cuarto la cifra de las unidades.
   
    unsigned long start_time, end_time;
    unsigned long duration;
@@ -180,10 +181,10 @@ void inicio(){
 
 
 
-// funcion para leer numero desde el teclado y mostrarlo en el display
+// Función para leer numero desde el teclado y mostrarlo en el display
 void getnumber(){
   // Espera que se entré un número desde el teclado. A medida que se incorporan los números son mostrados
-  // en el display y alamacenados en el arreglo global cadena. Al llegar al cuarto numero finaliza la función. 
+  // en el display y alamacenados en el arreglo global "cadena". Al llegar al cuarto número finaliza la función. 
   
   // borra el display
   display.clear();
@@ -211,13 +212,12 @@ void getnumber(){
 }
 
 void verifica(){
-   // Verifica que el número guardado en cadena sea un número valido, en caso afirmativo obtiene el número de cifras
-   // correctas (bien) y el numero de cifras desordenadas (regular), y si el número de correctas es 4 cambia la variable
-   // global "gano" a "true". 
+   // Verifica que el número guardado en "cadena" sea un número valido, en caso afirmativo obtiene el número de cifras
+   // correctas ("bien") y el numero de cifras desordenadas ("regular"), y si el número de cifras correctas es 4 cambia la variable
+   // global "gano" de "false" a "true". 
 
-  
-   // verifica que no hay cifras repetidas en el número introducido. Si el número tiene cifras repetidas la variable
-   // numvalido pasa de true a false
+   // Primer verificación. Verifica que no hay cifras repetidas en el número introducido. Si el número 
+   // tiene cifras repetidas la variable "numvalido" pasa de "true" a "false".
    bool numvalido = true;
    int bien = 0;
    int regular = 0;
@@ -229,12 +229,14 @@ void verifica(){
           }
       }
    }
+   
+   // Si hubo cifras repetidas manda el cartel "error" al display.
    if(!numvalido){
         display.clear();
         display.setSegments(error);
    }
+  // Si no hubo cifras repetida analiza el númro de cifras correctas ("bien") y desordenadas ("regular")
    else{
-     // cuenta el número de cifras en la posición correcta
      for(int i = 0; i<4; i++){
        for(int j = 0; j<4; j++){
          if(cadena[i] ==numero[j]){
@@ -247,23 +249,20 @@ void verifica(){
    Serial.println(bien);
    Serial.print("regular ");        
    Serial.println(regular);  
-   cadena[0] = ' ';
-   cadena[1] = '0'+bien;
-   cadena[2] = ' ';
-   cadena[3] = '0'+regular;
 
-   // muestra resultado en el display
+   // Muestra el resultado en el display.
    display.clear();
    display.showNumberDec(bien,false,1,1);
    display.showNumberDec(regular,false,1,3);    
    }
+  // Si "bien" es 4 modfifica el valor de la variable "gano": "gano" -> true 
   if (bien == 4){
     gano = true;
   }
 
 
-  //display.showNumberDec(atoi(cadena));
-  while(customKeypad.getKey() == 0 && bien != 4){}
+  // Esperamos a que se apriete alguna tecla para continuar.
+  while(customKeypad.getKey() == 0){}
   display.setSegments(guiones);
 
   delay(500);
@@ -278,12 +277,4 @@ void festejo(){
    delay(500);
   }
 
-}
-
-
-void displaycadena(){
-   for( int i=0;i<4;i++){
-   display.showNumberDec(atoi(cadena[i]),false,1,i+1);
-
-   }
 }
