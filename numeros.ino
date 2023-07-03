@@ -1,8 +1,5 @@
-/* Codigo para manejar un tetclado de 12 teclas y un display TM1637 (display de 
-4 dífgitos compuestos por 7 LEDs cada uno)
-
-En el marco del Taller, Electricida, Electrónica y Programación dicatado en el
-colegio Roberto Themis Speroni durante el mayo-junio de 2023. 
+/* Código para manejar un tetclado de 12 teclas y un display TM1637 (display de 
+4 dígitos compuestos por 7 LEDs cada uno)
 
 El teclado tiene 7 pines que se conectan al arduino del pin
 Teclado 1 --> Pin 8
@@ -21,8 +18,6 @@ Vin --> 3.3V
 CLK --> pin12
 DIO --> pin13
 
-
-
 */
 
 
@@ -31,10 +26,9 @@ DIO --> pin13
 #include <Keypad.h>
 #include <TM1637Display.h>
 
-//char customKey;
 char cadena[5]; // cuatro char para entrada VARIABLE GLOBAL
 char numero[5]; // número que hay que adivinar
-bool gano; // variable booleana que indica si ganó
+bool gano;      // variable booleana que indica si ganó
 
 
 // ===================================================================================
