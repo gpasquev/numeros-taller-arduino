@@ -212,8 +212,8 @@ void getnumber(){
 }
 
 void verifica(){
-   // Verifica que el número guardado en "cadena" sea un número valido, en caso afirmativo obtiene el número de cifras
-   // correctas ("bien") y el numero de cifras desordenadas ("regular"), y si el número de cifras correctas es 4 cambia la variable
+   // Verifica que el número guardado en "cadena" sea un número válido, en caso afirmativo obtiene el número de cifras
+   // correctas ("bien") y el número de cifras desordenadas ("regular"). Si el número de cifras correctas es 4 cambia la variable
    // global "gano" de "false" a "true". 
 
    // Primer verificación. Verifica que no hay cifras repetidas en el número introducido. Si el número 
