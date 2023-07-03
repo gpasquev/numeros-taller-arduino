@@ -278,3 +278,9 @@ void festejo(){
   }
 
 }
+
+// Función leeteclado devuelve la tecla que está oprimida cada vez que se la llama. 
+// Devuelve 0 (Null) si no hay tecla oprimida. 
+char leeteclado(){
+return customKeypad.getKey();
+}
