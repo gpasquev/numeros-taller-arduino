@@ -272,34 +272,34 @@ void festejo(){
 // Devuelve 0 (Null) si no hay tecla oprimida. 
 char leetecla(){
   char c = 'X';
-    if(digitalRead(13)==LOW){
+    if(digitalRead(K0PIN)==LOW){
       c = '0';
     }
-    if(digitalRead(12)==LOW){
+    if(digitalRead(K1PIN)==LOW){
       c = '1';
     }
-    if(digitalRead(11)==LOW){
+    if(digitalRead(K2PIN)==LOW){
       c = '2';
     }
-    if(digitalRead(10)==LOW){
+    if(digitalRead(K3PIN)==LOW){
       c = '3';
     }
-    if(digitalRead(9)==LOW){
+    if(digitalRead(K4PIN)==LOW){
       c = '4';
     }
-    if(digitalRead(8)==LOW){
+    if(digitalRead(K5PIN)==LOW){
       c = '5';
     }
-    if(digitalRead(7)==LOW){
+    if(digitalRead(K6PIN)==LOW){
       c = '6';
     }
-    if(digitalRead(6)==LOW){
+    if(digitalRead(K7PIN)==LOW){
       c = '7';
     }
-    if(digitalRead(5)==LOW){
+    if(digitalRead(K8PIN)==LOW){
       c = '8';
     }
-    if(digitalRead(4)==LOW){
+    if(digitalRead(K9PIN)==LOW){
       c = '9';
     }
   return c;
