@@ -1,16 +1,9 @@
-/* Código para manejar un teclado de 12 teclas y un display TM1637 (display de 
-4 dígitos compuestos por 7 LEDs cada uno)
+/* 
+Juego de adivinar el número de 4 cifras.
 
-El teclado tiene 7 pines que se conectan a los pines de entrada del arduino
-Teclado 1 --> Pin 8
-Teclado 2 --> Pin 2
-Teclado 3 --> Pin 3
-Teclado 4 --> Pin 4
-Teclado 5 --> Pin 5
-Teclado 6 --> Pin 6
-Teclado 7 --> Pin 7
-Dependiendo del teclado puede que sea necesario modificar la asiganción de pines
-ya sea en el físico, o en el código. 
+Código para manejar:
+-- un teclado de 10 teclas. Cada tecla a un puerto INPUT_PULLUP diferente.
+-  un display TM1637 (display de 4 dígitos compuestos por 7 LEDs cada uno)
 
 El display se conecta:
 GND --> GND
@@ -21,9 +14,7 @@ DIO --> pin13
 */
 
 
-
 #include <stdlib.h>
-#include <Keypad.h>
 #include <TM1637Display.h>
 
 // Variales globales 
@@ -33,26 +24,17 @@ bool gano;      // La variable "gano" es booleana y define si se ganó o aún no
 
 // ===================================================================================
 // CONFIGURACION DEL TECLADO =========================================================
-// (Todo esto se puede ssacar si se va a trabajar con teclas independientes)
-const byte ROWS = 3;
-const byte COLS = 4;
-
-/* Después de mucho esfuerzo encontré que debo darle la matriz de la siguiente manera */
-char keys[ROWS][COLS] = {
-  {'3','6','9','#'},
-  {'2','5','8','0'},
-  {'1','4','7','*'},
- 
-};
-
-/* la salida 1 del cable hasta la salida 7, se conectaron así:
- *  1 -> 8, 2-> 2, 3-> 3 ,4 -> 4, 5-> 5 , 6-> 6, 7-> 7
- */
-byte rowPins[ROWS] = {8,2,3};    //connect to the row pinouts of the keypad
-byte colPins[COLS] = {7,6,5,4};  //connect to the column pinouts of the keypad
-
-Keypad customKeypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS); 
-
+// Puertos donde se conectará cada tecla.
+# define K0PIN 11
+# define K1PIN 10
+# define K2PIN 9
+# define K3PIN 8
+# define K4PIN 7
+# define K5PIN 6
+# define K6PIN 5
+# define K7PIN 4
+# define K8PIN 3
+# define K9PIN 2
 
 
 // ====================================================================================
@@ -111,7 +93,17 @@ const uint8_t seg_gano[] = {
 void setup() {
  Serial.begin(9600);  
  display.setBrightness(7);
-}
+ pinMode(K0PIN,INPUT_PULLUP);
+ pinMode(K1PIN,INPUT_PULLUP);
+ pinMode(K2PIN,INPUT_PULLUP);
+ pinMode(K3PIN,INPUT_PULLUP);
+ pinMode(K4PIN,INPUT_PULLUP);
+ pinMode(K5PIN,INPUT_PULLUP);
+ pinMode(K6PIN,INPUT_PULLUP);
+ pinMode(K7PIN,INPUT_PULLUP);
+ pinMode(K8PIN,INPUT_PULLUP);
+ pinMode(K9PIN,INPUT_PULLUP);
+ }
 
 
 // =====================================================================================
@@ -279,9 +271,37 @@ void festejo(){
 // Función leeteclado devuelve la tecla que está oprimida cada vez que se la llama. 
 // Devuelve 0 (Null) si no hay tecla oprimida. 
 char leetecla(){
-  char c = customKeypad.getKey();
-  if (c==0){
-    return 'X';
-  }
+  char c = 'X';
+    if(digitalRead(13)==LOW){
+      c = '0';
+    }
+    if(digitalRead(12)==LOW){
+      c = '1';
+    }
+    if(digitalRead(11)==LOW){
+      c = '2';
+    }
+    if(digitalRead(10)==LOW){
+      c = '3';
+    }
+    if(digitalRead(9)==LOW){
+      c = '4';
+    }
+    if(digitalRead(8)==LOW){
+      c = '5';
+    }
+    if(digitalRead(7)==LOW){
+      c = '6';
+    }
+    if(digitalRead(6)==LOW){
+      c = '7';
+    }
+    if(digitalRead(5)==LOW){
+      c = '8';
+    }
+    if(digitalRead(4)==LOW){
+      c = '9';
+    }
   return c;
+  
 }
