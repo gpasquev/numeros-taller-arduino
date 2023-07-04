@@ -149,7 +149,7 @@ void inicio(){
    // Cartel de inicio
    display.setSegments(push);
 
-   while(customKeypad.getKey() == 0){}
+   while(leeteclado() == 0){}
    // Obtener el tiempo de finalización después de presionar el botón
    end_time = millis();
 
@@ -191,11 +191,6 @@ void getnumber(){
 
   int i =0;
   char c;
-  
-  cadena[0] = 0;
-  cadena[1] = 0;
-  cadena[2] = 0;
-  cadena[3] = 0;
   display.clear();
   while(i<4){
     c = customKeypad.getKey();
